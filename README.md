@@ -13,5 +13,8 @@ chicago.csv
 new_york_city.csv
 washington.csv
 
+### Recommended software
+The Explore-Bikeshare.R file can be viewed on RStudio, which can be downloaded from https://rstudio.com/products/rstudio/download/
+
 ### Credits
 This Project was made possible through the support and guidance from the Udacity's course: Programming for Data Science with R Nanodegree Program
