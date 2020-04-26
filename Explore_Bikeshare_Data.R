@@ -1,5 +1,5 @@
 # Set working directory
-setwd("~/nANADEGREE/R/Project Dataset")
+setwd("~/Nanodegree/R/Project Dataset")
 
 # activate packages
 library(tidyverse)
@@ -54,25 +54,25 @@ colSums(is.na(data.combined))
 table(data.combined$User.Type)
 #The most users of the bikeshare sysem are subscriber(728824) followed by Customers(170483)
 
-#Determine which city has the the longest trip duration 
+#Determine which city has the longest trip duration 
 by(data.combined$Trip.Duration,data.combined$City_Name, summary)
-#the median and mean count for Washington is higher indicating that the average trip 
+#the median and mean count for Washington is higher indicating that the average trip
 #duration was higher in Washington
 
 #Plot trip duration
 ggplot(aes(x=Trip.Duration), data=data.combined) +
-  geom_histogram(binwidth=30) + 
+  geom_histogram(binwidth=30) +
   ggtitle('Histogram of Trip Durations') +
-  labs(x = "Trip Duration") + 
+  labs(x = "Trip Duration") +
   scale_x_continuous(limits=c(0,1500))
 
 
 #Plot a histogram of trip duration and facet by city_Name
 ggplot(aes(x=Trip.Duration), data=data.combined) +
-  geom_histogram(binwidth=30) + 
+  geom_histogram(binwidth=30) +
   ggtitle('Histogram of Trip Durations') +
-  labs(x = "Trip Duration") + 
-  scale_x_continuous(limits=c(0,1500)) + 
+  labs(x = "Trip Duration") +
+  scale_x_continuous(limits=c(0,1500)) +
  facet_wrap(~City_Name)
 
 #determine popular trip days
@@ -80,8 +80,8 @@ as.Date(data.combined$Start.Time)
 
 wday(data.combined$Start.Time, label = TRUE, abbr = FALSE)
 
-data.combined %>% 
-  mutate(wday = wday(Start.Time, label = TRUE)) %>% 
+data.combined %>%
+  mutate(wday = wday(Start.Time, label = TRUE)) %>%
   ggplot(aes(x = wday, fill=wday)) +
   geom_bar()+
   labs(
@@ -89,7 +89,7 @@ data.combined %>%
     x = "Week_Day",
     y = "Count" ) +
   theme_minimal()
-  
+
 #from the data it can be seen that the most popular day of trips is Wednesday
 
 
@@ -98,11 +98,11 @@ datetime <- ymd_hms(data.combined$Start.Time)
 hour(datetime) <- hour(datetime) + 1
 update(datetime, year = 2020, month = 2, mday = 2, hour = 2)
 
-a <-data.combined %>% 
-  mutate(Start.Time = update(datetime, yday = 1)) %>% 
+a <-data.combined %>%
+  mutate(Start.Time = update(datetime, yday = 1)) %>%
   ggplot(aes(Start.Time)) +
   geom_freqpoly(binwidth = 300)
-  
+
 a
 
 #Facet by City
@@ -126,7 +126,7 @@ ny_station_combo <- cbind(ny_start_station,ny_end_station) #combine data into a 
 glimpse(ny_station_combo) #take a look to see if it is as we expect
 
 #Let's tidy up our new table
-ny_stations_no_duplicates <-  ny_station_combo %>% 
+ny_stations_no_duplicates <-  ny_station_combo %>%
   group_by(Start.Station, End.Station)  %>% #group data
   tally()  %>%  #this counts the number of times a certain combination appears in the list
   arrange(desc(n)) %>% #arrange the most frequently occurring combinations first
@@ -163,8 +163,8 @@ head(ny_top_ten) #this looks great and like we expect
 
 #We need to combine or unite the Start.Station and End.Station columns into a single column
 # because we want our graph's legend to display the station names
-ny_top_ten <- ny_top_ten %>% 
-  select(Key, Start_Station, End_Station, Count) %>% 
+ny_top_ten <- ny_top_ten %>%
+  select(Key, Start_Station, End_Station, Count) %>%
   unite(Start_to_end_Station, c(Start_Station,End_Station))
 
 #So the we are going to only use the "key" column and the "count column for our graph
@@ -189,7 +189,7 @@ wash_station_combo <- cbind(wash_start_station,wash_end_station) #combine data i
 glimpse(wash_station_combo) #take a look to see if it is as we expect
 
 #Let's tidy up our new table
-wash_stations_no_duplicates <-  wash_station_combo %>% 
+wash_stations_no_duplicates <-  wash_station_combo %>%
   group_by(Start.Station, End.Station)  %>% #group data
   tally()  %>%  #this counts the number of times a certain combination appears in the list
   arrange(desc(n)) %>% #arrange the most frequently occurring combinations first
@@ -226,8 +226,8 @@ head(wash_top_ten) #this looks great and like we expect
 
 #We need to combine or unite the Start.Station and End.Station columns into a single column
 # because we want our graph's legend to display the station names
-wash_top_ten <- wash_top_ten %>% 
-  select(Key, Start_Station, End_Station, Count) %>% 
+wash_top_ten <- wash_top_ten %>%
+  select(Key, Start_Station, End_Station, Count) %>%
   unite(Start_to_end_Station, c(Start_Station,End_Station))
 
 #So the we are going to only use the "key" column and the "count column for our graph
@@ -249,33 +249,33 @@ head(chi_start_station)
 head(chi_end_station)
 
 #Combine the data
-chi_station_combo <- cbind(chi_start_station,chi_end_station) 
-glimpse(chi_station_combo) 
+chi_station_combo <- cbind(chi_start_station,chi_end_station)
+glimpse(chi_station_combo)
 
 #Let's tidy up our new table
-chi_stations_no_duplicates <-  chi_station_combo %>% 
-  group_by(Start.Station, End.Station)  %>% 
-  tally()  %>% 
-  arrange(desc(n)) %>% 
-  glimpse() 
+chi_stations_no_duplicates <-  chi_station_combo %>%
+  group_by(Start.Station, End.Station)  %>%
+  tally()  %>%
+  arrange(desc(n)) %>%
+  glimpse()
 
-chi_stations_no_duplicates <- distinct(chi_stations_no_duplicates) 
-head(chi_stations_no_duplicates) 
-nrow(chi_stations_no_duplicates) 
+chi_stations_no_duplicates <- distinct(chi_stations_no_duplicates)
+head(chi_stations_no_duplicates)
+nrow(chi_stations_no_duplicates)
 
 #Let's create a table that contains only the top 10 station combinations
-chi_top_ten <- chi_stations_no_duplicates[1:10,] 
+chi_top_ten <- chi_stations_no_duplicates[1:10,]
 head(chi_top_ten)
 
 #Let's start constructing our bar chart
 nrow(chi_top_ten)
-chi_key <- data.frame(c(seq(1,10,by=1))) 
-chi_top_ten <- bind_cols(chi_key,chi_top_ten) 
+chi_key <- data.frame(c(seq(1,10,by=1)))
+chi_top_ten <- bind_cols(chi_key,chi_top_ten)
 glimpse(chi_top_ten)
 head(chi_top_ten)
 
 #There are a few random columns we need to delete
-chi_top_ten <- select(chi_top_ten, -c(V1,V2,V3)) 
+chi_top_ten <- select(chi_top_ten, -c(V1,V2,V3))
 head(chi_top_ten)
 
 #Lets rename our columns to make it more readable
@@ -285,11 +285,11 @@ colnames(chi_top_ten)[3] <- "End_Station"
 colnames(chi_top_ten)[4] <- "Count"
 
 #lets see how our table looks
-head(chi_top_ten) 
+head(chi_top_ten)
 
 #We need to combine or unite the Start.Station and End.Station columns into a single column
-chi_top_ten <- chi_top_ten %>% 
-  select(Key, Start_Station, End_Station, Count) %>% 
+chi_top_ten <- chi_top_ten %>%
+  select(Key, Start_Station, End_Station, Count) %>%
   unite(Start_to_end_Station, c(Start_Station,End_Station))
 
 #So the we are going to only use the "key" column and the "count column for our graph
