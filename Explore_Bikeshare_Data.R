@@ -54,7 +54,13 @@ colSums(is.na(data.combined))
 table(data.combined$User.Type)
 #The most users of the bikeshare sysem are subscriber(728824) followed by Customers(170483)
 
+<<<<<<< HEAD
 #Determine which city has the longest trip duration 
+||||||| ee04261
+#Determine which city has the the longest trip duration 
+=======
+#Determine which city has the the longest trip duration
+>>>>>>> refactoring
 by(data.combined$Trip.Duration,data.combined$City_Name, summary)
 #the median and mean count for Washington is higher indicating that the average trip
 #duration was higher in Washington
@@ -300,4 +306,12 @@ chi_plot <- ggplot(data = chi_top_ten, aes(x = Key, y = Count, fill = Start_to_e
     x = "Start and End Station Combination",
     y = "Count")+
   theme_bw()
+<<<<<<< HEAD
 chi_plot
+||||||| ee04261
+chi_plot
+=======
+chi_plot
+
+#End of Code
+>>>>>>> refactoring
